@@ -2,6 +2,7 @@
 This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!! Instructions will be in the readme soon!!
 This GitHub project is now available! 
 Cactus OS Version 1.0.0 Arizona is available for download!
+Please select the latest version from the dropdown list for the best experience.
 # INSTRUCTIONS FOR DOWNLOADING:
 #1: First open Windows Explorer. The in the bar that is next to the arrows, type %appdata%, and then click on .Minecraft folder.
 #2: Next, you want to find the saves folder, and find the named folder of your computercraft world. Then, click on the computer folder.
