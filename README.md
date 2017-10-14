@@ -14,4 +14,6 @@ Please select the latest version from the dropdown list for the best experience.
 #8: Follow the instructions on the screen, and have a great time using your new OS! 
 
 # COMPUTERCRAFT THREAD:
-Coming Soon!
+http://www.computercraft.info/forums2/index.php?/topic/29075-cactus-os-updates-download-and-more-made-by-cactus-inc/
+
+Cactus OS's Page for updates on computercraft!
