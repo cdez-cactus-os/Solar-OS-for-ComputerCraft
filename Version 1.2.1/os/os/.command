@@ -1,0 +1,6 @@
+term.clear()
+term.setCursorPos(1, 1)
+print("Welcome to Cactus OS Command Prompt!")
+print("Cactus Inc Copyright 2017 All Rights Reserved.")
+print("To return to the menu, type 'back'.")
+print("------------------------------------")
