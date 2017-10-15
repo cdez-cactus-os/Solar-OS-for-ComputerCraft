@@ -1,0 +1,24 @@
+textutils.slowPrint("For this program to work, the wireless modem must be on the left side of the computer!")
+rednet.open("left")
+term.clear()
+term.setCursorPos(1, 1)
+print("Recieving/Getting Files...")
+while true do
+	id,msg = rednet.recieve()
+	if msg == "RECEIVE" then
+		id2,msg2 = rednet.receive()
+		f = fs.open(msg2, "w")
+		id3,msg3 = rednet.receive()
+		f.write(msg3)
+		f.close
+		print("File "..msg2.." received!")
+		sleep(5)
+		shell.run("back")
+	end
+end
+
+term.clear()
+term.setCursorPos(1, 1)
+print("File Received.")
+sleep(5)
+shell.run("back")
