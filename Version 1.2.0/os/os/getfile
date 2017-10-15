@@ -1,0 +1,23 @@
+rednet.open("left")
+term.clear()
+term.setCursorPos(1, 1)
+print("Recieving/Getting Files...")
+while true do
+	id,msg = rednet.recieve()
+	if msg == "RECIEVE" then
+		id2,msg2 = rednet.recieve()
+		f = fs.open(msg2, "w")
+		id3,msg3 = rednet.recieve()
+		f.write(msg3)
+		f.close
+		print("File "..msg2.." recieved!")
+		sleep(5)
+		shell.run("../.menu")
+	end
+end
+
+term.clear()
+term.setCursorPos(1, 1)
+print("File Recieved.")
+sleep(5)
+shell.run("../.menu")
