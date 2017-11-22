@@ -1,7 +1,11 @@
 term.clear()
 term.setCursorPos(1, 1)
-shell.run("delete","install")
-shell.run("delete","eject")
-shell.run("cp","disk/install","install")
-shell.run("cp","disk/eject","eject")
+if fs.exsist("/install") then
+  fs.delete("/install")
+end
+if fs.exists("/eject") then
+  fs.delete("/eject")
+end
+fs.move("/disk/install","/install")
+fs.move("/disk/eject","/eject")
 print("First time installation? Type 'install' to begin. If not, type eject.")
