@@ -6,6 +6,6 @@ end
 if fs.exists("/eject") then
   fs.delete("/eject")
 end
-fs.move("/disk/install","/install")
-fs.move("/disk/eject","/eject")
+fs.copy("/disk/install","/install")
+fs.copy("/disk/eject","/eject")
 print("First time installation? Type 'install' to begin. If not, type eject.")
