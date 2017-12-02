@@ -16,7 +16,7 @@ local function drawMenu()
    term.setCursorPos(1,1)
    term.write("Cactus OS V.1.2.1 Arizona // ")
 term.setCursorPos(1,2)
-shell.run("id")
+print(os.getComputerID())
  
    term.setCursorPos(w-11,1)
    if nOption == 1 then
@@ -76,11 +76,11 @@ term.clear()
  
 --Conditions
 if nOption  == 1 then
-shell.run("os/.command")
+os.run({},"os/.command")
 elseif nOption == 2 then
-shell.run("os/.programs")
+os.run({},"os/.programs")
 elseif nOption == 3 then
 os.shutdown()
 else
-shell.run("mailclient")
+os.run({},"mailclient")
 end
