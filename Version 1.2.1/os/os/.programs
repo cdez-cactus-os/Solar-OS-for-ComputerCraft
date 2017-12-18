@@ -16,7 +16,7 @@ local function drawMenu()
    term.setCursorPos(1,1)
    term.write("Program List")
 term.setCursorPos(1,2)
-shell.run("id")
+print("#"..os.getComputerID())
  
    term.setCursorPos(w-11,1)
    if nOption == 1 then
@@ -76,11 +76,11 @@ term.clear()
  
 --Conditions
 if nOption  == 1 then
-shell.run("CactusOSWord")
+os.run({},"CactusOSWord")
 elseif nOption == 2 then
-shell.run("os/sendfile")
+os.run({},"os/sendfile")
 elseif nOption == 3 then
-shell.run("os/getfile")
+os.run({},"os/getfile")
 else
-shell.run(".menu")
+os.run({},".menu")
 end
