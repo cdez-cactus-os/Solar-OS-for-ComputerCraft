@@ -1,6 +1,6 @@
 term.clear()
 term.setCursorPos(1, 1)
-if fs.exsist("/install") then
+if fs.exists("/install") then
   fs.delete("/install")
 end
 if fs.exists("/eject") then
@@ -8,4 +8,29 @@ if fs.exists("/eject") then
 end
 fs.copy("/disk/install","/install")
 fs.copy("/disk/eject","/eject")
-print("First time installation? Type 'install' to begin. If not, type eject.")
+local choice = function(input,breakkeys,returnNumber)
+	local fpos = 0
+	repeat
+		event, key = os.pullEvent("key")
+		if type(key) == "number" then key = keys.getName(key) end
+		if key == nil then key = " " end
+		if type(breakkeys) == "table" then
+			for a = 1, #breakkeys do
+				if key == breakkeys[a] then
+					return ""
+				end
+			end
+		end
+		fpos = string.find(input, key)
+	until fpos
+	return returnNumber and fpos or key
+end
+print("First time installation? [I]nstall, [E]ject, [A]bort?")
+local res = choice("iea")
+if res == "i" then
+  shell.run("install")
+elseif res == "e" then
+  shell.run("eject")
+else then
+  print("Aborted to shell.")
+end
