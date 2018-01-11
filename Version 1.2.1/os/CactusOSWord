@@ -2,12 +2,12 @@
 --Version 1.2
 
 term.setCursorBlink(true)
-local sNew = "|   [Make new file]    Open existing file   |"
-local sOpen = "|    Make new file    [Open existing file]  |"
-local sYes = "|               [Yes]    No                 |"
-local sNo = "|                Yes    [No]                |"
-local sSave = "|      [Save]    Quit     Save & Quit       |"
-local sQuit = "|       Save    [Quit]    Save & Quit       |"
+local sNew =         "|   [Make new file]    Open existing file   |"
+local sOpen =        "|    Make new file    [Open existing file]  |"
+local sYes =         "|               [Yes]    No                 |"
+local sNo =          "|                Yes    [No]                |"
+local sSave =        "|      [Save]    Quit     Save & Quit       |"
+local sQuit =        "|       Save    [Quit]    Save & Quit       |"
 local sSaveAndQuit = "|       Save     Quit    [Save & Quit]      |"
 local iMenuXCor = 0
 local sFile = ""
@@ -16,6 +16,25 @@ local tLines = {}
 local iScrollX, iScrollY = 0,0
 local x, y = 1,1
 local w, h = term.getSize()
+
+local printStayX = function(text) --print that goes down 1 and returns to original X instead of X=1
+	local cx,cy = term.getCursorPos()
+	local output = print(text)
+	local ox,oy = term.getCursorPos()
+	term.setCursorPos(cx,oy)
+	return output
+end
+
+local explode = function(div,str)
+    if (div=='') then return false end
+    local pos,arr = 0,{}
+    for st,sp in function() return string.find(str,div,pos,true) end do
+        arr[#arr+1] = str:sub(pos,st-1)
+        pos = sp + 1
+    end
+    arr[#arr+1] = str:sub(pos)
+    return arr
+end
 
 local function fMenuXCor()
 	iMenuXCor = (w/2)-21
@@ -36,28 +55,21 @@ local function fExitDir()
 end
 
 local function fOpenNew()
-	tLines = {}
-	table.insert(tLines, "")
+	tLines = {""}
 end
 
 local function fMenuNotExist()
     term.clear()
 	term.setCursorBlink(false)
 	local sYesOrNo = sYes
-    term.setCursorPos(iMenuXCor,6)
-	write(" ___________________________________________")
-	term.setCursorPos(iMenuXCor,7)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,8)
-	write("|         Error: File doesn't exist.        |")
-	term.setCursorPos(iMenuXCor,9)
-	write("|          Do you want to make it?          |")
-	term.setCursorPos(iMenuXCor,10)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,11)
-	write(sYesOrNo)
-	term.setCursorPos(iMenuXCor,12)
-	write("|___________________________________________|")
+   	term.setCursorPos(iMenuXCor,6)
+	printStayX(" ___________________________________________")
+	printStayX("|                                           |")
+	printStayX("|         Error: File doesn't exist.        |")
+	printStayX("|          Do you want to make it?          |")
+	printStayX("|                                           |")
+	printStayX(sYesOrNo)
+	printStayX("|___________________________________________|")
 	repeat
 		local sEvent, param = os.pullEvent()
 		if sEvent == "key" then
@@ -86,13 +98,9 @@ end
 local function fLoad()
 	sPath = shell.resolve(sFile)
 	if fs.exists( sPath ) then
-		local file = io.open( sPath , "r")
-		local sLine = file:read()
-		while sLine do
-			table.insert(tLines, sLine)
-			sLine = file:read()
-		end
-		file:close()
+		local file = fs.open( sPath , "r")
+		tLines = explode( "\n", file.readAll() )
+		file.close()
 	else
 		fMenuNotExist()
 	end
@@ -102,17 +110,12 @@ local function fMenuNew()
 	term.clear()
 	term.setCursorBlink(false)
 	term.setCursorPos(iMenuXCor,1)
-	write(" ___________________________________________")
-	term.setCursorPos(iMenuXCor,2)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,3)
-	write("|     How do you want to call the file?     |")
-	term.setCursorPos(iMenuXCor,4)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,5)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,6)
-	write("|___________________________________________|")
+	printStayX(" ___________________________________________")
+	printStayX("|                                           |")
+	printStayX("|     How do you want to call the file?     |")
+	printStayX("|                                           |")
+	printStayX("|                                           |")
+	printStayX("|___________________________________________|")
 	term.setCursorPos(iMenuXCor+6,5)
 	sFile = io.read()
 	sFileExt = string.sub(sFile, -3)
@@ -124,19 +127,13 @@ local function fMenuNew()
 		term.clear()
 		local sYesOrNo = sYes
 		term.setCursorPos(iMenuXCor,6)
-		write(" ___________________________________________")
-		term.setCursorPos(iMenuXCor,7)
-		write("|                                           |")
-		term.setCursorPos(iMenuXCor,8)
-		write("|         Error: File already exist.        |")
-		term.setCursorPos(iMenuXCor,9)
-		write("|          Do you want to edit it?          |")
-		term.setCursorPos(iMenuXCor,10)
-		write("|                                           |")
-		term.setCursorPos(iMenuXCor,11)
-		write(sYesOrNo)
-		term.setCursorPos(iMenuXCor,12)
-		write("|___________________________________________|")
+		printStayX(" ___________________________________________")
+		printStayX("|                                           |")
+		printStayX("|         Error: File already exist.        |")
+		printStayX("|          Do you want to edit it?          |")
+		printStayX("|                                           |")
+		printStayX(sYesOrNo)
+		printStayX("|___________________________________________|")
 		repeat
 			local sEvent, param = os.pullEvent()
 			if sEvent == "key" then
@@ -174,33 +171,24 @@ local function fMenuOpen()
 	term.setCursorPos(iMenuXCor,10)
 	shell.run("ls")
 	term.setCursorPos(iMenuXCor,1)
-	write(" ___________________________________________")
-	term.setCursorPos(iMenuXCor,2)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,3)
-	write("|      Which file do you want to open?      |")
-	term.setCursorPos(iMenuXCor,4)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,5)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,6)
-	write("|___________________________________________|")
+	printStayX(" ___________________________________________")
+	printStayX("|                                           |")
+	printStayX("|      Which file do you want to open?      |")
+	printStayX("|                                           |")
+	printStayX("|                                           |")
+	printStayX("|___________________________________________|")
 	term.setCursorPos(iMenuXCor+7,5)
 	term.setCursorBlink(true)
-	sFile = read()
-	sFileExt = string.sub(sFile, -3)
-	if sFileExt ~= ".txt" then
-		sFile = sFile..".txt"
-	end
+	sFile = io.read()
+--	sFileExt = string.sub(sFile, -3) --if you opened a non-txt file and saved it, it wouldn't save into the same file
+--	if sFileExt ~= ".txt" then
+--		sFile = sFile..".txt"
+--	end
 	sPath = shell.resolve(sFile)
-    local file = io.open( sPath , "r")
-		local sLine = file:read()
-		while sLine do
-			table.insert(tLines, sLine)
-			sLine = file:read()
-		end
-		file:close()
-    bExit = false
+    	local file = fs.open( sPath , "r")
+	local tLines = explode( "\n", file.readAll() )
+	file.close()
+    	bExit = false
 end
 
 local function fMenuStart()
@@ -209,23 +197,15 @@ local function fMenuStart()
 	term.clear()
 	term.setCursorBlink(false)
 	term.setCursorPos(iMenuXCor,6)
-	write(" ___________________________________________")
-	term.setCursorPos(iMenuXCor,7)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,8)
-	write("| Welcome to the CactusOS Word Processor,   |")
-	term.setCursorPos(iMenuXCor,9)
-	write("|          what do you want to do?          |")
-	term.setCursorPos(iMenuXCor,10)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,11)
-	write(sChoose)
-	term.setCursorPos(iMenuXCor,12)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,13)
-	write("|         To access menu press Ctrl.        |")
-	term.setCursorPos(iMenuXCor,14)
-	write("|___________________________________________|")
+	printStayX(" ___________________________________________")
+	printStayX("|                                           |")
+	printStayX("| Welcome to the CactusOS Word Processor,   |")
+	printStayX("|          what do you want to do?          |")
+	printStayX("|                                           |")
+	printStayX(sChoose)
+	printStayX("|                                           |")
+	printStayX("|         To access menu press Ctrl.        |")
+	printStayX("|___________________________________________|")
 	repeat
 	local sEvent, param = os.pullEvent()
 	if sEvent == "key" then
@@ -258,17 +238,12 @@ local function fMenuExit()
 	term.setCursorBlink(false)
 	local sSaveOrQuit = sSave
 	term.setCursorPos(iMenuXCor,6)
-	write(" ___________________________________________")
-	term.setCursorPos(iMenuXCor,7)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,8)
-	write("|          What do you want to do?          |")
-	term.setCursorPos(iMenuXCor,9)
-	write("|                                           |")
-	term.setCursorPos(iMenuXCor,10)
-	write(sSaveOrQuit)
-	term.setCursorPos(iMenuXCor,11)
-	write("|___________________________________________|")
+	printStayX(" ___________________________________________")
+	printStayX("|                                           |")
+	printStayX("|          What do you want to do?          |")
+	printStayX("|                                           |")
+	printStayX(sSaveOrQuit)
+	printStayX("|___________________________________________|")
 	repeat
 		local sEvent, param = os.pullEvent()
 		if sEvent == "key" then
@@ -300,7 +275,7 @@ local function fMenuExit()
 					term.setCursorPos(iMenuXCor,10)
 					write(sSaveOrQuit)
 				elseif param == 29 or param == 157 then
-					
+					--will change once I replace these numbers with keys API
 				end
 			end
 		end
@@ -325,12 +300,10 @@ local function fMenuExit()
 end
 
 function fSave()
-	local file = io.open( sPath, "w" )
+	local file = fs.open( sPath, "w" )
 	if file then
-		for n, sLine in ipairs( tLines ) do
-			file:write( sLine .. "\n" )
-		end
-		file:close()
+		file.write( table.concat(tLines, "\n") )
+		file.close()
 	end
 end
 
