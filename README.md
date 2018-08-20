@@ -1,7 +1,7 @@
-# Cactus-OS-for-ComputerCraft
-This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!! Instructions will be in the readme soon!!
+# Solar-OS-for-ComputerCraft
+This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!!
 This GitHub project is now available! 
-Cactus OS Version 1.2.0 Arizona is available for download!
+Solar OS Version 1.2.1 Arizona is available for download!
 Please select the latest version from the dropdown list for the best experience.
 # INSTRUCTIONS FOR DOWNLOADING:
 #1: First open Windows Explorer. The in the bar that is next to the arrows, type %appdata%, and then click on .Minecraft folder.
@@ -11,9 +11,11 @@ Please select the latest version from the dropdown list for the best experience.
 #5: When you have the folder from github, get the files 'eject, install, and startup' from the disk folder first and paste it into the main level of this folder.
 #6: After you have done that, click on the folder 'os' and copy/paste it into the folder of your disk number.
 #7: When you have done that, play Minecraft on that world, get the disk with the same id as the folder number, and put it in a disk drive.
-#8: Follow the instructions on the screen, and have a great time using your new OS! 
+#8: Follow the instructions on the screen, and have a great time using your new OS!
+Gitget Installer coming soon! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
+
 
 # COMPUTERCRAFT THREAD:
 http://www.computercraft.info/forums2/index.php?/topic/29075-cactus-os-updates-download-and-more-made-by-cactus-inc/
 
-Cactus OS's Page for updates on computercraft!
+SolarOS's Page for updates on computercraft!
