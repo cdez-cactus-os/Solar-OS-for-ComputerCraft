@@ -16,6 +16,6 @@ Gitget Installer coming soon! This is the simpler method, and easier for servers
 
 
 # COMPUTERCRAFT THREAD:
-http://www.computercraft.info/forums2/index.php?/topic/29075-cactus-os-updates-download-and-more-made-by-cactus-inc/
+http://www.computercraft.info/forums2/index.php?/topic/29075-solar-ospreviously-cactus-os-made-by-cactus-inc/
 
 SolarOS's Page for updates on computercraft!
