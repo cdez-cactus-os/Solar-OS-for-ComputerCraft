@@ -1,8 +1,23 @@
-textutils.slowPrint("For this program to work, the wireless modem must be on the left side of the computer!")
-
 local args = {...}
 
-rednet.open("left")
+local mSide = nil
+
+for i, s in pairs(rs.getSides()) do
+	if peripheral.getType(s) == "modem" then
+		if peripheral.call(s, "isWireless") then
+			mSide = s
+		else
+			error("Modem not wireless!", 0)
+		end
+	end
+end
+
+if not mSide then
+	error("No modem found", 0)
+end
+
+rednet.open(mSide)
+
 term.clear()
 term.setCursorPos(1, 1)
 if #args < 1 then
