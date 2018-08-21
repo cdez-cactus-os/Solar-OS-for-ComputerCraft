@@ -1,9 +1,7 @@
-shell.run("delete","install")
-shell.run("delete","eject")
-disk.eject("top")
-disk.eject("bottom")
-disk.eject("left")
-disk.eject("right")
-disk.eject("front")
-disk.eject("back")
+fs.delete("eject")
+fs.delete("install")
+local disks = {peripheral.find("drive")}
+for a = 1, #disks do
+  disk.eject(disks[a])
+end
 os.reboot()
