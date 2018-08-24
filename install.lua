@@ -1,10 +1,8 @@
 --[[
-  Gitget for ComputerCraft
- A simple GitHub repo downloader!
- 
-   pastebin get TZd5PYgz gitget
-   
-Modified to specifically download SolarOS
+  GitGet by LDDestroier (not apemanzilla's), modded for SolarOS
+  To install SolarOS, use this:
+  > wget https://github.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/raw/master/install.lua install.lua
+  > install.lua
                               --]]
 local verbose = true
  
