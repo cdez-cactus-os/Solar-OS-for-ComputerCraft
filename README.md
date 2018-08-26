@@ -1,5 +1,5 @@
 # Solar-OS-for-ComputerCraft
-This is not a real OS! This is for computercraft, which is a simple OS to use and navigate!
+This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!!
 This GitHub project is now available! 
 Solar OS Version 1.2.1 Arizona is available for download!
 Please select the latest version from the dropdown list for the best experience.
@@ -20,12 +20,7 @@ Please select the latest version from the dropdown list for the best experience.
 
 #8: Follow the instructions on the screen, and have a great time using your new OS!
 
-Gitget Installer is here! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
-Use these commands in your (Advanced*) Computer:
-wget https://github.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/raw/master/install.lua install.lua
-install.lua
-
-*= Preferred.
+Gitget Installer coming soon! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
 
 
 # COMPUTERCRAFT THREAD:

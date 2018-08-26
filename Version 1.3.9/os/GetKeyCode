@@ -1,0 +1,12 @@
+term.clear()
+term.setCursorPos(1,1)
+
+print("Press a key")
+	while true do
+		event, param = os.pullEvent()
+		if event == "key" then
+			print("Keycode is " .. param)
+            break
+		end
+		sleep(0.5)
+	end

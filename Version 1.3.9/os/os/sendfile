@@ -1,0 +1,53 @@
+local args = {...}
+
+local mSide = nil
+
+for i, s in pairs(rs.getSides()) do
+	if peripheral.getType(s) == "modem" then
+		if peripheral.call(s, "isWireless") then
+			mSide = s
+		else
+			error("Modem not wireless!", 0)
+		end
+	end
+end
+
+if not mSide then
+	error("No modem found", 0)
+end
+
+rednet.open(mSide)
+
+term.clear()
+term.setCursorPos(1, 1)
+if #args < 1 then
+	print("Usage <> Required, [] Optional:")
+	print("sendfile [ComputerID] <File>")
+	return
+end
+if #args == 1 then
+	if fs.exists(args[1]) then
+		textutils.slowPrint("Sending File"..args[1].."!")
+		rednet.broadcast("RECEIVE")
+		rednet.broadcast(args[1])
+		file = fs.open(args[1], "r")
+		rednet.broadcast(file.readAll())
+		file.close()
+	else
+		print(args[1].." does not exist.")
+		return
+	end
+else
+	if fs.exists(args[2]) then
+		textutils.slowPrint("Sending file "..args[2].." to "..args[1])
+		F = fs.open(args[2], "r")
+		id = tonumber(args[1])
+		rednet.send(id, "RECEIVE")
+		rednet.send(id, args[2])
+		rednet.send(id, F.readAll())
+		F.close()
+	else
+		print(args[2].." does not exist!")
+		return
+	end
+end

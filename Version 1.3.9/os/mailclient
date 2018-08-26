@@ -1,0 +1,434 @@
+--MailClient, developed by NitrogenFingers--
+
+w,h = term.getSize()
+umail = { }
+rmail = { }
+slc = 1
+serverid = 0
+side = "left"
+
+confirmmsg = ""
+newmsg = ""
+newto = 0
+
+emidx = 1
+emlist = { }
+
+state = 1
+states = {
+  ["TOP"] = {
+    id = 1,
+    options = 6
+  },
+  ["COMPOSETEXT"] = {
+    id = 2
+  },
+  ["COMPOSEMENU"] = {
+    id = 3,
+    options = 2
+  },
+  ["UNREAD"] = {
+    id = 4,
+    options = 2
+  },
+  ["ARCHIVE"] = {
+    id = 5,
+    options = 4
+  },
+  ["CONFIRM"] = {
+    id = 6,
+    options = 1
+  },
+  ["CHANGENAME"] = {
+    id = 7
+  }
+}
+
+-- Helper Functions --
+
+function split(str, pattern)
+  local t = { }
+  local fpat = "(.-)" .. pattern
+  local last_end = 1
+  local s, e, cap = str:find(fpat, 1)
+  while s do
+    if s ~= 1 or cap ~= "" then
+      table.insert(t,cap)
+    end
+    last_end = e+1
+    s, e, cap = str:find(fpat, last_end)
+  end
+  if last_end <= #str then
+    cap = str:sub(last_end)
+    table.insert(t, cap)
+  end
+  return t
+end
+
+-- Interface Drawing --
+
+function printHeader()
+  term.setCursorPos(1, 1)
+  term.write("Solar OS EMAIL CLIENT")
+  printRight(1, "VERSION 1.0")
+  term.setCursorPos(1, 2)
+  term.write("Computer ID: "..os.getComputerID())
+end
+
+function printConfirm()
+  local boxsize = 26
+  local ok = "[ OK ]"
+  printCentered(8, string.rep("*", boxsize))
+  printCentered(9, "*"..string.rep(" ", boxsize-2).."*")
+  local ws = (boxsize - #confirmmsg - 2)/2
+  printCentered(10, "*"..string.rep(" ", ws)..confirmmsg..string.rep(" ", ws).."*")
+  ws = (boxsize - #ok - 2)/2
+  printCentered(11, "*"..string.rep(" ", ws)..ok..string.rep(" ", ws).."*")
+  printCentered(12, "*"..string.rep(" ", boxsize-2).."*")
+  printCentered(13, string.rep("*", boxsize))
+end
+
+function printChangeName()
+  term.setCursorPos(4, 6)
+  term.write("Enter new name: ")
+end
+
+function printStored()
+  term.setCursorPos(1,4)
+  term.write("From: "..emlist[emidx].from)
+  term.setCursorPos(1,5)
+  term.write("Sent at: "..textutils.formatTime(tonumber(emlist[emidx].time)))
+  term.setCursorPos(1,6)
+  term.write("--------------------")
+  term.setCursorPos(1,7)
+  print(emlist[emidx].body)
+  term.setCursorPos(1,h-1)
+  term.write("Reading Email "..emidx.." of "..table.getn(emlist))  
+end
+
+function printArchiveMenu()
+  local ws = string.rep(" ", 4)
+  local pr, ba, de, ne
+  if slc==1 then pr = "[ PREV ]" else pr = "  PREV  " end
+  if slc==2 then ba = "[ BACK ]" else ba = "  BACK  " end
+  if slc==3 then de = "[ DELETE ]" else de = "  DELETE  " end
+  if slc==4 then ne = "[ NEXT ]" else ne = "  NEXT  " end
+  term.setCursorPos(1,h)
+  printCentered(h, ws..pr..ws..ba..ws..de..ws..ne)
+end
+
+function printUnreadMenu()
+  local full = ""
+  if slc==1 then full = "[ ARCHIVE ]       DELETE  "
+            else full = "  ARCHIVE       [ DELETE ]"
+  end
+  printCentered(h, full)
+end
+
+function printCompose()
+  term.setCursorPos(1,4)
+  term.write("To:")
+  term.setCursorPos(1,5)
+  term.write("Body:")
+  term.setCursorPos(1,h)
+  term.write("Hit Enter twice to end the email.")
+end
+
+function printComposeMenu()
+  term.setCursorPos(1,h)
+  term.clearLine()
+  local optionstr = ""
+  if slc == 1 then
+     optionstr = " [ SEND ]        DELETE   "
+  else
+     optionstr = "   SEND        [ DELETE ] "
+  end
+  printCentered(h, optionstr)
+end
+
+function printTopMenu()
+  term.setCursorPos(1, h-1)
+  term.write("Hi, "..os.getComputerLabel().."!")
+  term.setCursorPos(1, h)
+  term.write("You have "..table.getn(umail).." new message(s).")
+
+  printCentered(4, "Select Option:")
+  if slc == 1 then printCentered(7, " [ COMPOSE EMAIL ] ")
+  else printCentered(7, "   COMPOSE EMAIL   ") end
+  if slc == 2 then printCentered(8, " [ UNREAD EMAILS ] ")
+  else printCentered(8, "   UNREAD EMAILS   ") end
+  if slc == 3 then printCentered(9, "[ ARCHIVED EMAILS ]")
+  else printCentered(9, "  ARCHIVED EMAILS  ") end
+  if slc == 4 then printCentered(10, "  [ CHANGE NAME ]  ")
+  else printCentered(10, "    CHANGE NAME    ") end
+  if slc == 5 then printCentered(11, " [ REFRESH EMAIL ] ")
+  else printCentered(11, "   REFRESH EMAIL   ") end
+  if slc == 6 then printCentered(12, "     [ QUIT ]      ")
+  else printCentered(12, "       QUIT        ") end
+end
+
+function printRight(height, value)
+  local xpos = w - string.len(value)
+  term.setCursorPos(xpos, height)
+  term.write(value)
+end
+
+function printCentered(height, value)
+  local xpos = w/2 - string.len(value)/2
+  term.setCursorPos(xpos, height)  
+  term.write(value)
+end
+
+-- Email Tools --
+
+function sendEmail()
+  rednet.open(side)
+  local newemail = "$EMAIL"..newto
+                 .."!SP!"..os.getComputerLabel()
+                 .."!SP!"..os.time().."!SP!"
+                 ..newmsg
+  rednet.send(serverid, newemail)
+  if rednet.receive(5)~=nil then
+    confirmmsg = "MESSAGE SENT"
+  else
+    confirmmsg = "ERROR OCCURRED"
+  end
+  rednet.close(side)
+end
+
+function readEmails()
+  rednet.open(side)
+  rednet.send(serverid, "$REQUEST")
+  local id, mail = rednet.receive(5)
+  if mail==nil then
+    confirmmsg = "SERVER ERROR"
+    rednet.close("left")
+    return
+  end
+  mail = string.gsub(mail, "$RESPONSE", "")
+
+  local t = split(mail, "!SP!")
+
+  for i=1,table.getn(t),3 do
+    table.insert(umail, {
+      from = t[i],
+      time = t[i+1],
+      body = t[i+2]
+    })
+  end
+  rednet.close(side)
+end
+
+function readFromArchive()
+  if not fs.exists(shell.resolve(".").."/archive") then return end
+  local file = io.open(shell.resolve(".").."/archive", "r")
+  local fullstr = ""
+  local fline = file:read()
+  while fline do
+    fullstr=fullstr..fline
+    fline = file:read()
+  end  
+  file:close()
+  local t = split(fullstr, "!SP!")
+  for i=1,#t,3 do
+    table.insert(rmail, {
+      from = t[i],
+      time = t[i+1],
+      body = t[i+2]
+    })
+  end
+end
+
+function writeToArchive()
+  local file = io.open(shell.resolve(".").."/archive", "w")
+  local arcstr = ""
+  for i=1,#rmail do
+    arcstr=arcstr.."!SP!"..rmail[i].from.."!SP!"..
+                 rmail[i].time.."!SP!"..rmail[i].body
+  end
+  file:write(arcstr)
+  file:close()
+end
+
+-- Interface Logic --
+
+function runInterface()
+  term.clear()
+  while true do
+    if state==states["TOP"].id then
+      term.clear()
+      printHeader()
+      printTopMenu()
+      local e,key = os.pullEvent("key")
+      if key==200 and slc>1 then slc = slc-1
+      elseif key==208 and slc<6 then slc=slc+1
+      elseif key==28 then
+        if slc==1 then
+          state = states["COMPOSETEXT"].id
+          newmsg = ""
+        elseif slc==2 then
+          if table.getn(umail)==0 then
+            confirmmsg="No new mail."
+            state=states["CONFIRM"].id
+          else
+            emidx=1
+            emlist = umail
+            state=states["UNREAD"].id
+          end
+        elseif slc==3 then
+          if table.getn(rmail)==0 then
+            confirmmsg="Archive Empty."
+            state=states["CONFIRM"].id
+          else
+            emidx=1
+            emlist = rmail
+            state=states["ARCHIVE"].id
+          end
+        elseif slc==4 then
+          state=states["CHANGENAME"].id
+        elseif slc==5 then
+          local ocount = table.getn(umail)
+          readEmails() 
+          if ocount < table.getn(umail) then
+            confirmmsg = "Messages Received!"
+          else
+            confirmmsg = "No new mail."
+          end
+          state = states["CONFIRM"].id
+        elseif slc==6 then
+          term.clear()
+          term.setCursorPos(1,1)
+          return
+        end
+      end
+    elseif state==states["CHANGENAME"].id then
+      term.clear()
+      printHeader()
+      printChangeName()
+      local nname = io.read()
+      if #nname>25 then 
+        nname = string.sub(nname, 1, 25)
+      end
+      os.setComputerLabel(nname)
+      state=states["TOP"].id
+    elseif state==states["COMPOSETEXT"].id then
+      term.clear()
+      printHeader()
+      printCompose()
+      term.setCursorPos(5, 4)
+      newto = tonumber(io.read())
+      term.setCursorPos(1, 6)
+      local newmail=""
+      repeat
+        newmail = io.read().."\n"
+        newmsg=newmsg..newmail.." "
+      until newmail=="\n"
+      state = states["COMPOSEMENU"].id
+    elseif state==states["COMPOSEMENU"].id then
+      printComposeMenu()
+      local e, key = os.pullEvent("key")
+      if key==203 and slc>1 then 
+        slc=slc-1
+      elseif key==205 and slc<2 then 
+        slc=slc+1
+      elseif key==28 then
+        if slc==1 then
+          sendEmail()
+          state = states["CONFIRM"].id
+        else 
+          state = states["TOP"].id
+        end
+      end
+    elseif state==states["ARCHIVE"].id then
+      term.clear()
+      printHeader()
+      printStored()
+      printArchiveMenu()
+      local e, key = os.pullEvent("key")
+      if key==203 and slc>1 then
+        slc=slc-1
+      elseif key==205 and slc<4 then
+        slc=slc+1
+      elseif key==28 then
+        if slc==1 and emidx>1 then emidx=emidx-1
+        elseif slc==2 then state=states["TOP"].id
+        elseif slc==3 then
+          table.remove(rmail, emidx)
+          writeToArchive()
+          if #rmail==0 then
+            confirmmsg= "Archive Empty."
+            state=states["CONFIRM"].id
+          end
+          if emidx>#rmail then emidx=#rmail end
+        elseif slc==4 and emidx<#rmail then
+          emidx=emidx+1
+        end
+      end
+    elseif state==states["UNREAD"].id then
+      term.clear()
+      printHeader()
+      printStored()
+      printUnreadMenu()
+      local e, key = os.pullEvent("key")
+      if key==203 and slc>1 then
+        slc=slc-1
+      elseif key==205 and slc<2 then
+        slc=slc+1
+      elseif key==28 then
+        if slc==1 then
+          table.insert(rmail, {
+            from = emlist[emidx].from,
+            time = emlist[emidx].time,
+            body = emlist[emidx].body 
+           })
+           writeToArchive()
+        end
+        table.remove(umail, emidx)
+        emlist = umail
+        if table.getn(umail)==0 then
+          confirmmsg="Inbox Empty."
+          state=states["CONFIRM"].id
+        end
+      end
+    elseif state==states["CONFIRM"].id then
+      printConfirm()
+      local e, key = os.pullEvent("key")
+      if key==28 then
+        state = states["TOP"].id
+      end
+    end
+  end
+end
+
+-- On Startup --
+
+function getPrefs()
+  local file = io.open(shell.resolve(".").."/pref")
+  if not file then
+    print("pref file not found! Make sure to include"
+        .." it in your mail directory.")
+    return false
+  end
+  local sidl = file:read()
+  sidl = string.gsub(sidl, "serverid=", "")
+  print(sidl)
+  sidl = tonumber(sidl)
+  if sidl==0 then
+    print("Client prefs not initialized- check readme for detals.")
+    return false
+  end
+  serverid = sidl
+  sidl = file:read()
+  sidl = string.gsub(sidl, "side=", "")
+  side = sidl
+  return true
+end
+
+if not getPrefs() then return end
+readFromArchive()
+rednet.broadcast("Computer: "..os.getComputerID().." is now on network.")
+if os.getComputerLabel() == nil then
+  os.setComputerLabel("New User")
+end
+
+runInterface()

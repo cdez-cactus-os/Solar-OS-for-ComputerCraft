@@ -8,7 +8,7 @@ local verbose = true
  
 local tArg = {...}
 local reponame = "cdez-cactus-os/Solar-OS-for-ComputerCraft"
-local repopath = "Version 1.2.1"
+local repopath = "Version 1.3.9"
 local outpath = tArg[1] or ""
  
 if outpath:sub(1,1) ~= "/" then

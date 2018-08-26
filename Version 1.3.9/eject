@@ -1,0 +1,7 @@
+fs.delete("eject")
+fs.delete("install")
+local disks = {peripheral.find("drive")}
+for a = 1, #disks do
+  disk.eject(disks[a])
+end
+os.reboot()

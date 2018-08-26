@@ -1,0 +1,40 @@
+local mSide = nil
+
+for i, s in pairs(rs.getSides()) do
+	if peripheral.getType(s) == "modem" then
+		if peripheral.call(s, "isWireless") then
+			mSide = s
+		else
+			error("Modem not wireless!", 0)
+		end
+	end
+end
+
+if not mSide then
+	error("No modem found", 0)
+end
+
+rednet.open(mSide)
+
+term.clear()
+term.setCursorPos(1, 1)
+print("Receiving/Getting Files...")
+while true do
+	id,msg = rednet.recieve()
+	if msg == "RECEIVE" then
+		id2,msg2 = rednet.receive()
+		f = fs.open(msg2, "w")
+		id3,msg3 = rednet.receive()
+		f.write(msg3)
+		f.close
+		print("File "..msg2.." received!")
+		sleep(5)
+		shell.run("back")
+	end
+end
+
+term.clear()
+term.setCursorPos(1, 1)
+print("File Received.")
+sleep(5)
+shell.run("back")
