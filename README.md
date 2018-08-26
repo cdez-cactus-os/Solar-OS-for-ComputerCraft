@@ -20,7 +20,11 @@ Please select the latest version from the dropdown list for the best experience.
 
 #8: Follow the instructions on the screen, and have a great time using your new OS!
 
-Gitget Installer coming soon! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
+Gitget Installer is here! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
+Use these commands in a computer, and you will have installed Solar OS!
+
+wget https://github.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/raw/master/install.lua install.lua
+install.lua
 
 
 # COMPUTERCRAFT THREAD:
