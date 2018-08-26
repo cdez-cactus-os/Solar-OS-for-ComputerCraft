@@ -1,7 +1,7 @@
 # Solar-OS-for-ComputerCraft
 This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!!
 This GitHub project is now available! 
-Solar OS Version 1.2.1 Arizona is available for download!
+Solar OS Version 1.3.9 Beta Arizona is available for download!
 Please select the latest version from the dropdown list for the best experience.
 # INSTRUCTIONS FOR DOWNLOADING:
 #1: First open Windows Explorer. The in the bar that is next to the arrows, type %appdata%, and then click on .Minecraft folder.
