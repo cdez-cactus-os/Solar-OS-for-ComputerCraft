@@ -24,6 +24,7 @@ Gitget Installer is here! This is the simpler method, and easier for servers, if
 Use these commands in a computer, and you will have installed Solar OS!
 
 wget https://github.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/raw/master/install.lua install.lua
+
 install.lua
 
 
