@@ -38,7 +38,7 @@ local preset = {
 			print("Deleting unneccesary files")
 			fs.delete("Version 1.2.1")
 			fs.delete("README.md")
-			fs.delete("LICENCE")
+			fs.delete("LICENSE")
 			fs.delete("_config.yml")
 			fs.delete("install-solar-os.lua")
 			fs.delete("json")
