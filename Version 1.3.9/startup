@@ -1,13 +1,21 @@
+term.setBackgroundColor(colors.black)
+term.setTextColor(colors.black)
 term.clear()
 term.setCursorPos(1, 1)
+
 if fs.exists("/install") then
   fs.delete("/install")
 end
+
 if fs.exists("/eject") then
   fs.delete("/eject")
 end
-fs.copy("/disk/install","/install")
-fs.copy("/disk/eject","/eject")
+
+if fs.exists("/disk/install") then
+	fs.copy("/disk/install","/install")
+	fs.copy("/disk/eject","/eject")
+end
+
 local choice = function(input,breakkeys,returnNumber)
 	local fpos = 0
 	repeat
@@ -25,12 +33,22 @@ local choice = function(input,breakkeys,returnNumber)
 	until fpos
 	return returnNumber and fpos or key
 end
+
 print("First time installation? [I]nstall, [E]ject, [A]bort?")
 local res = choice("iea")
+
 if res == "i" then
-  shell.run("install")
+	if fs.exists("install") then
+		shell.run("install")
+	else
+		print("Installer file does not exist. Aborting.")
+	end
 elseif res == "e" then
-  shell.run("eject")
-else then
+	if fs.exists("eject") then
+		shell.run("eject")
+	else
+		print("'eject' file does not exist. Aborting.")
+	end
+else
   print("Aborted to shell.")
 end
