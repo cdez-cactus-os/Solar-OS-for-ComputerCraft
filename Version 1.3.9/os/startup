@@ -9,4 +9,4 @@ textutils.slowPrint("Thank you for using Solar OS.")
 textutils.slowPrint("**********************")
 textutils.slowPrint("Now starting Solar OS...")
 
-os.run({},"os/.menu")
+os.run({shell = shell},"os/.menu")
