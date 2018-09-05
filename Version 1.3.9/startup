@@ -3,15 +3,10 @@ term.setTextColor(colors.white)
 term.clear()
 term.setCursorPos(1, 1)
 
-if fs.exists("/install") then
-  fs.delete("/install")
-end
 
-if fs.exists("/eject") then
-  fs.delete("/eject")
-end
-
-if fs.exists("/disk/install") then
+if fs.exists("/disk/install") and fs.exists("/disk/eject") then
+	fs.delete("/install")
+	fs.delete("/eject")
 	fs.copy("/disk/install","/install")
 	fs.copy("/disk/eject","/eject")
 end
