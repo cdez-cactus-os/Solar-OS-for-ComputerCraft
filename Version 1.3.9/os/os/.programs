@@ -72,7 +72,7 @@ term.clear()
  
 --Conditions
 if nOption  == 1 then
-	os.run({shell = shell},"CactusOSWord")
+	os.run({shell = shell},"SolarOSWord")
 elseif nOption == 2 then
 	os.run({shell = shell},"os/sendfile")
 elseif nOption == 3 then
