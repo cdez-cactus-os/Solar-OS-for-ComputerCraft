@@ -36,6 +36,7 @@ local preset = {
 	done = function(path)
 		if not silent then
       print("Deleting unneccesary files")
+      fs.delete("Version 1.2.1")
       fs.delete("README.md")
       fs.delete("LICENCE")
       fs.delete("_config.yml")
