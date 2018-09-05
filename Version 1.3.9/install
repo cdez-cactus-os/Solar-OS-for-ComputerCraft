@@ -1,15 +1,24 @@
+local delFile = function(path)
+	if fs.exists(path) then
+		fs.delete(path)
+		return true
+	else
+		return false
+	end
+end
+
 print("Welcome to Solar OS!")
 print("The installer will now begin to run...")
 print("---------------------------------------")
 textutils.slowPrint("Deleting pre-existing files")
-fs.delete("/startup")
-fs.delete("/os")
-fs.delete("/uninstall")
-fs.delete("/.menu")
-fs.delete("/back")
-fs.delete("/.command")
-fs.delete("/.programs")
-fs.delete("/GetKeyCode")
+delFile("/startup")
+delFile("/os")
+delFile("/uninstall")
+delFile("/.menu")
+delFile("/back")
+delFile("/.command")
+delFile("/.programs")
+delFile("/GetKeyCode")
 print("---------------------------------------")
 sleep(1)
 textutils.slowPrint("Installing new files...")
