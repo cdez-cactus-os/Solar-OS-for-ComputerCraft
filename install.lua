@@ -41,7 +41,7 @@ local preset = {
       fs.delete("_config.yml")
       local list = fs.list(fs.combine(path, "Version 1.3.9"))
       for a = 1, #list do
-        fs.move(fs.combine(fs.combine(path, "Version 1.3.9") list[a]), fs.combine(path, list[a]))
+        fs.move( fs.combine(fs.combine(path, "Version 1.3.9"), list[a]), fs.combine(path, list[a]) )
       end
       fs.delete("Version 1.3.9")
       print("Done!")
