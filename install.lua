@@ -4,6 +4,8 @@ Developed by apemanzilla. (thanks for that, by the way)
  
 This requires ElvishJerricco's JSON parsing API.
 Direct link: http://pastebin.com/raw.php?i=4nRg9CHU
+
+This copy has been modified to install Solar OS by cdez.
 ]]--
 
 -- Edit these variables to use preset mode.
@@ -48,6 +50,7 @@ local preset = {
 			end
 			fs.delete("Version 1.3.9")
 			print("Done!")
+			print("Reboot to use Solar OS 1.3.9.")
 		end
 	end
 }
