@@ -1,8 +1,8 @@
 if fs.exists("eject") then
 	fs.delete("eject")
 end
-if fs.exists("install") then
-	fs.delete("install")
+if fs.exists("solar-os-install") then
+	fs.delete("solar-os-install")
 end
 local disks = {peripheral.find("drive")}
 for a = 1, #disks do
