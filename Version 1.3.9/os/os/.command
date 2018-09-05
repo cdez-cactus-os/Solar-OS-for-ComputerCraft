@@ -6,6 +6,6 @@ print("Welcome to Solar OS Command Prompt!")
 term.setTextColor(colors.white)
 print("To return, type 'back'.")
 
-os.run({},"rom/programs/shell")
+shell.run("rom/programs/shell")
 
 os.run({shell = shell}, "os/.menu")
