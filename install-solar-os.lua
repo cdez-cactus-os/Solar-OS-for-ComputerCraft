@@ -35,18 +35,20 @@ local preset = {
 	-- Function to run when the download completes
 	done = function(path)
 		if not silent then
-      print("Deleting unneccesary files")
-      fs.delete("Version 1.2.1")
-      fs.delete("README.md")
-      fs.delete("LICENCE")
-      fs.delete("_config.yml")
-      local list = fs.list(fs.combine(path, "Version 1.3.9"))
-      for a = 1, #list do
-        fs.move( fs.combine(fs.combine(path, "Version 1.3.9"), list[a]), fs.combine(path, list[a]) )
-      end
-      fs.delete("Version 1.3.9")
-      print("Done!")
-    end
+			print("Deleting unneccesary files")
+			fs.delete("Version 1.2.1")
+			fs.delete("README.md")
+			fs.delete("LICENCE")
+			fs.delete("_config.yml")
+			fs.delete("install-solar-os.lua")
+			fs.delete("json")
+			local list = fs.list(fs.combine(path, "Version 1.3.9"))
+			for a = 1, #list do
+				fs.move( fs.combine(fs.combine(path, "Version 1.3.9"), list[a]), fs.combine(path, list[a]) )
+			end
+			fs.delete("Version 1.3.9")
+			print("Done!")
+		end
 	end
 }
 
