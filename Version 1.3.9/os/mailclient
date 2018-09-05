@@ -204,7 +204,7 @@ function readEmails()
 	local id, mail = rednet.receive(5)
 	if mail==nil then
 		confirmmsg = "SERVER ERROR"
-		rednet.close("left")
+		rednet.close(side)
 		return
 	end
 	mail = string.gsub(mail, "$RESPONSE", "")
@@ -335,7 +335,7 @@ function runInterface()
 				slc=slc+1
 			elseif key==28 then
 				if slc==1 then
-					endEmail()
+					sendEmail()
 					state = states["CONFIRM"].id
 				else 
 					state = states["TOP"].id
