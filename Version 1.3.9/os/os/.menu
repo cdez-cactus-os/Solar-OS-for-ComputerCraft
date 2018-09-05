@@ -70,11 +70,11 @@ term.clear()
  
 --Conditions
 if nOption == 1 then
-	os.run({},"/os/.command")
+	os.run({shell = shell},"/os/.command")
 elseif nOption == 2 then
-	os.run({},"/os/.programs")
+	os.run({shell = shell},"/os/.programs")
 elseif nOption == 3 then
 	os.shutdown()
 elseif nOption == 4 then
-	os.run({},"mailclient")
+	os.run({shell = shell},"mailclient")
 end
