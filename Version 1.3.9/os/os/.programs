@@ -1,0 +1,82 @@
+os.pullEvent = os.pullEventRaw
+ 
+local w,h = term.getSize()
+ 
+function printCentered( y,s )
+	local x = math.floor((w - string.len(s)) / 2)
+	term.setCursorPos(x,y)
+	term.clearLine()
+	term.write( s )
+end
+ 
+local nOption = 1
+ 
+local function drawMenu()
+	term.clear()
+	term.setCursorPos(1,1)
+	term.write("Program List")
+	term.setCursorPos(1,2)
+	print("#"..os.getComputerID())
+	term.setCursorPos(w-11,1)
+	
+	if nOption == 1 then
+		term.write("Cactus OS Word")
+	elseif nOption == 2 then
+		term.write("Send File")
+	elseif nOption == 3 then
+		term.write("Get File")
+	elseif nOption == 4 then
+		term.write("Back")
+	end
+end
+ 
+--GUI
+term.clear()
+local function drawFrontend()
+	printCentered( math.floor(h/2) - 3, "")
+	printCentered( math.floor(h/2) - 2, "Program Menu" )
+	printCentered( math.floor(h/2) - 1, "")
+	printCentered( math.floor(h/2) + 0, ((nOption == 1) and "[ Cactus OS Word  ]") or "Cactus OS Word " )
+	printCentered( math.floor(h/2) + 1, ((nOption == 2) and "[ Send File ]") or "Send File" )
+	printCentered( math.floor(h/2) + 2, ((nOption == 3) and "[ Get File ]") or "Get File" )
+	printCentered( math.floor(h/2) + 3, ((nOption == 4) and "[ Back]") or " Back" )
+	printCentered( math.floor(h/2) + 4, "")
+end
+ 
+--Display
+drawMenu()
+drawFrontend()
+ 
+while true do
+	local e,p = os.pullEvent()
+	if e == "key" then
+		local key = p
+		if key == 17 or key == 200 then
+			if nOption > 1 then
+				nOption = nOption - 1
+				drawMenu()
+				drawFrontend()
+			end
+		elseif key == 31 or key == 208 then
+			if nOption < 4 then
+				nOption = nOption + 1
+				drawMenu()
+				drawFrontend()
+			end
+		elseif key == 28 then
+			break
+		end
+	end
+end
+term.clear()
+ 
+--Conditions
+if nOption  == 1 then
+	os.run({shell = shell},"CactusOSWord")
+elseif nOption == 2 then
+	os.run({shell = shell},"os/sendfile")
+elseif nOption == 3 then
+	os.run({shell = shell},"os/getfile")
+else
+	os.run({},"os/.menu")
+end
