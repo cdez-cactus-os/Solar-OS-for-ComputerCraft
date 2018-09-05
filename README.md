@@ -1,6 +1,6 @@
 # Solar-OS-for-ComputerCraft
-This is not a real OS!!!!!!!!!!!!!!!!! This is a work in progress! This is for computercraft!!!!
-This GitHub project is now available! 
+This is not a real OS! This is a work in progress! This is for computercraft!
+This GitHub project is now available!
 Solar OS Version 1.3.9 Beta Arizona is available for download!
 Please select the latest version from the dropdown list for the best experience.
 # INSTRUCTIONS FOR DOWNLOADING:
@@ -22,10 +22,10 @@ Please select the latest version from the dropdown list for the best experience.
 
 Gitget Installer is here! This is the simpler method, and easier for servers, if you don't have access the filesystem to the server.
 Use these commands in a computer, and you will have installed Solar OS!
-
-wget https://github.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/raw/master/install.lua install.lua
-
+`
+wget https://raw.githubusercontent.com/cdez-cactus-os/Solar-OS-for-ComputerCraft/master/install.lua install.lua
 install.lua
+`
 
 
 # COMPUTERCRAFT THREAD:
