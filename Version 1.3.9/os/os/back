@@ -1,1 +1,1 @@
-shell.run(".menu")
+os.run({shell = shell}, "os/.menu")
