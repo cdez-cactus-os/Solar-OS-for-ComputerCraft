@@ -12,7 +12,7 @@ local nOption = 1
 local function drawMenu()
 	term.clear()
 	term.setCursorPos(1,1)
-	term.write("Cactus OS V.1.3.9 Arizona // ")
+	term.write("Solar OS V.1.3.9 Arizona // ")
 	term.setCursorPos(1,2)
 	print("Computer ID: "..os.getComputerID())
 	
