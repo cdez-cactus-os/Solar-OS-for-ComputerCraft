@@ -32,7 +32,7 @@ end
 term.clear()
 local function drawFrontend()
  	printCentered( math.floor(h/2) - 3, "")
-	printCentered( math.floor(h/2) - 2, "Cactus OS Menu" )
+	printCentered( math.floor(h/2) - 2, "Solar OS Menu" )
 	printCentered( math.floor(h/2) - 1, "")
 	printCentered( math.floor(h/2) + 0, ((nOption == 1) and "[ Command  ]") or "Command " )
 	printCentered( math.floor(h/2) + 1, ((nOption == 2) and "[ Programs ]") or "Programs" )
